@@ -118,7 +118,7 @@ export function LightningCursor() {
       const speed = Math.sqrt(dx * dx + dy * dy)
 
       if (speed > 3) {
-        if (trailRef.current.length < 15) {
+        if (trailRef.current.length < 20) {
           trailRef.current.push({
             x: mouseRef.current.x,
             y: mouseRef.current.y,
@@ -126,7 +126,7 @@ export function LightningCursor() {
           })
         }
 
-        if (Math.random() > 0.85 && lightningRef.current.length < 5) {
+        if (Math.random() > 0.7 && lightningRef.current.length < 8) {
           const angle = Math.random() * Math.PI * 2
           const length = 30 + Math.random() * 40
           const endX = mouseRef.current.x + Math.cos(angle) * length
@@ -215,7 +215,7 @@ export function LightningCursor() {
       const dy = y - mouseRef.current.prevY
       const speed = Math.sqrt(dx * dx + dy * dy)
 
-      if (speed < 1 && Math.random() > 0.95 && lightningRef.current.length < 3) {
+      if (speed < 1 && Math.random() > 0.92 && lightningRef.current.length < 5) {
         const angle = Math.random() * Math.PI * 2
         const length = 15 + Math.random() * 20
         const endX = x + Math.cos(angle) * length
