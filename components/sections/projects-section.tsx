@@ -7,7 +7,7 @@ import { ExternalLink, Github, Zap, Code2, Cpu, Globe, Server, Terminal } from "
 const projects = [
   {
     title: "NexusFlow",
-    description: "Slack/Discord-inspired team collaboration chat with SignalR real-time messaging, file sharing, typing indicators, and read receipts. Clean Architecture + CQRS pattern.",
+    description: "Slack/Discord tarzı takım işbirliği uygulaması. SignalR ile gerçek zamanlı mesajlaşma, dosya paylaşımı, yazma göstergeleri ve okundu bilgisi. Clean Architecture + CQRS pattern.",
     tech: [".NET 8", "SignalR", "PostgreSQL", "Redis", "MinIO", "CQRS"],
     icon: Server,
     colSpan: 2 as const,
@@ -54,14 +54,6 @@ const projects = [
     icon: Code2,
     colSpan: 1 as const,
     github: "https://github.com/batuhansimsar/Bootcamp",
-  },
-  {
-    title: "Budget Management",
-    description: "Kişisel bütçe ve harcama takip uygulaması. ASP.NET Core MVC ile geliştirilmiş.",
-    tech: ["ASP.NET Core", "MVC", "Entity Framework", "SQL Server"],
-    icon: Code2,
-    colSpan: 1 as const,
-    github: "https://github.com/batuhansimsar/BudgetManagement",
   },
   {
     title: "Brain Tumor Detection",
