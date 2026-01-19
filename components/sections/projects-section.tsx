@@ -6,6 +6,15 @@ import { ExternalLink, Github, Zap, Code2, Cpu, Globe, Server, Terminal } from "
 
 const projects = [
   {
+    title: "NexusFlow",
+    description: "Slack/Discord-inspired team collaboration chat with SignalR real-time messaging, file sharing, typing indicators, and read receipts. Clean Architecture + CQRS pattern.",
+    tech: [".NET 8", "SignalR", "PostgreSQL", "Redis", "MinIO", "CQRS"],
+    icon: Server,
+    colSpan: 2 as const,
+    featured: true,
+    github: "https://github.com/batuhansimsar/NexusFlow",
+  },
+  {
     title: "Microbank",
     description: "Mikroservis mimarisi ile geliştirilmiş bankacılık uygulaması. SAGA pattern, MassTransit ve Docker ile production-ready çözüm.",
     tech: [".NET 8", "MassTransit", "PostgreSQL", "Docker", "RabbitMQ"],
@@ -13,6 +22,22 @@ const projects = [
     colSpan: 2 as const,
     featured: true,
     github: "https://github.com/batuhansimsar/Microbank",
+  },
+  {
+    title: "HospitalApp",
+    description: "Hastane yönetim sistemi. Hasta, doktor, randevu ve departman yönetimi. Clean Architecture ile geliştirilmiş.",
+    tech: [".NET 8", "Entity Framework", "PostgreSQL", "Docker"],
+    icon: Server,
+    colSpan: 1 as const,
+    github: "https://github.com/batuhansimsar/HospitalApp",
+  },
+  {
+    title: "AI Document Assistant",
+    description: "RAG (Retrieval-Augmented Generation) ile PDF analizi ve soru-cevap sistemi. Gemini AI entegrasyonu.",
+    tech: ["Python", "FastAPI", "Gemini AI", "RAG", "ChromaDB"],
+    icon: Cpu,
+    colSpan: 1 as const,
+    github: "https://github.com/batuhansimsar/ai-document-assistant",
   },
   {
     title: "IonCLI",
@@ -29,6 +54,14 @@ const projects = [
     icon: Code2,
     colSpan: 1 as const,
     github: "https://github.com/batuhansimsar/Bootcamp",
+  },
+  {
+    title: "Budget Management",
+    description: "Kişisel bütçe ve harcama takip uygulaması. ASP.NET Core MVC ile geliştirilmiş.",
+    tech: ["ASP.NET Core", "MVC", "Entity Framework", "SQL Server"],
+    icon: Code2,
+    colSpan: 1 as const,
+    github: "https://github.com/batuhansimsar/BudgetManagement",
   },
   {
     title: "Brain Tumor Detection",
