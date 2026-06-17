@@ -85,6 +85,12 @@ export function LightningCursor() {
     const ctx = canvas.getContext("2d", { alpha: true })
     if (!ctx) return
 
+    let isMobile = false
+    const checkMobile = () => {
+      isMobile = window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches
+    }
+    checkMobile()
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio, 2)
       canvas.width = window.innerWidth * dpr
@@ -92,6 +98,7 @@ export function LightningCursor() {
       canvas.style.width = `${window.innerWidth}px`
       canvas.style.height = `${window.innerHeight}px`
       ctx.scale(dpr, dpr)
+      checkMobile()
     }
     resize()
 
@@ -104,6 +111,8 @@ export function LightningCursor() {
 
     let lastMoveTime = 0
     const handleMouseMove = (e: MouseEvent) => {
+      if (isMobile) return
+
       const now = performance.now()
       if (now - lastMoveTime < 16) return // ~60fps max for mouse tracking
       lastMoveTime = now
@@ -142,17 +151,17 @@ export function LightningCursor() {
     }
 
     const handleClick = (e: MouseEvent) => {
-      const boltCount = 8 // Reduced from 16
+      const boltCount = isMobile ? 6 : 8
       for (let i = 0; i < boltCount; i++) {
         const angle = (i / boltCount) * Math.PI * 2
-        const length = 60 + Math.random() * 40
+        const length = isMobile ? (45 + Math.random() * 30) : (60 + Math.random() * 40)
         const endX = e.clientX + Math.cos(angle) * length
         const endY = e.clientY + Math.sin(angle) * length
 
         lightningRef.current.push({
-          points: generateLightningPath(e.clientX, e.clientY, endX, endY, 5),
+          points: generateLightningPath(e.clientX, e.clientY, endX, endY, isMobile ? 4 : 5),
           age: 0,
-          maxAge: 20,
+          maxAge: isMobile ? 15 : 20,
         })
       }
     }
@@ -170,19 +179,21 @@ export function LightningCursor() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Update and draw trail
-      trailRef.current = trailRef.current.filter((point) => {
-        point.age++
-        return point.age < 25
-      })
+      if (!isMobile) {
+        // Update and draw trail
+        trailRef.current = trailRef.current.filter((point) => {
+          point.age++
+          return point.age < 25
+        })
 
-      // Draw trail connections
-      if (trailRef.current.length > 1) {
-        for (let i = 1; i < trailRef.current.length; i++) {
-          const p1 = trailRef.current[i - 1]
-          const p2 = trailRef.current[i]
-          const alpha = 1 - Math.max(p1.age, p2.age) / 25
-          drawLightning(ctx, [p1, p2], alpha * 0.5)
+        // Draw trail connections
+        if (trailRef.current.length > 1) {
+          for (let i = 1; i < trailRef.current.length; i++) {
+            const p1 = trailRef.current[i - 1]
+            const p2 = trailRef.current[i]
+            const alpha = 1 - Math.max(p1.age, p2.age) / 25
+            drawLightning(ctx, [p1, p2], alpha * 0.5)
+          }
         }
       }
 
@@ -194,38 +205,40 @@ export function LightningCursor() {
         return bolt.age < bolt.maxAge
       })
 
-      const { x, y } = mouseRef.current
+      if (!isMobile) {
+        const { x, y } = mouseRef.current
 
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, 30)
-      gradient.addColorStop(0, "rgba(150, 255, 255, 0.6)")
-      gradient.addColorStop(0.4, "rgba(0, 255, 255, 0.2)")
-      gradient.addColorStop(1, "rgba(0, 200, 255, 0)")
-      ctx.fillStyle = gradient
-      ctx.beginPath()
-      ctx.arc(x, y, 30, 0, Math.PI * 2)
-      ctx.fill()
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, 30)
+        gradient.addColorStop(0, "rgba(150, 255, 255, 0.6)")
+        gradient.addColorStop(0.4, "rgba(0, 255, 255, 0.2)")
+        gradient.addColorStop(1, "rgba(0, 200, 255, 0)")
+        ctx.fillStyle = gradient
+        ctx.beginPath()
+        ctx.arc(x, y, 30, 0, Math.PI * 2)
+        ctx.fill()
 
-      // Bright core
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)"
-      ctx.beginPath()
-      ctx.arc(x, y, 4, 0, Math.PI * 2)
-      ctx.fill()
+        // Bright core
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)"
+        ctx.beginPath()
+        ctx.arc(x, y, 4, 0, Math.PI * 2)
+        ctx.fill()
 
-      const dx = x - mouseRef.current.prevX
-      const dy = y - mouseRef.current.prevY
-      const speed = Math.sqrt(dx * dx + dy * dy)
+        const dx = x - mouseRef.current.prevX
+        const dy = y - mouseRef.current.prevY
+        const speed = Math.sqrt(dx * dx + dy * dy)
 
-      if (speed < 1 && Math.random() > 0.92 && lightningRef.current.length < 5) {
-        const angle = Math.random() * Math.PI * 2
-        const length = 15 + Math.random() * 20
-        const endX = x + Math.cos(angle) * length
-        const endY = y + Math.sin(angle) * length
+        if (speed < 1 && Math.random() > 0.92 && lightningRef.current.length < 5) {
+          const angle = Math.random() * Math.PI * 2
+          const length = 15 + Math.random() * 20
+          const endX = x + Math.cos(angle) * length
+          const endY = y + Math.sin(angle) * length
 
-        lightningRef.current.push({
-          points: generateLightningPath(x, y, endX, endY, 3),
-          age: 0,
-          maxAge: 8,
-        })
+          lightningRef.current.push({
+            points: generateLightningPath(x, y, endX, endY, 3),
+            age: 0,
+            maxAge: 8,
+          })
+        }
       }
 
       animationRef.current = requestAnimationFrame(animate)
